@@ -52,3 +52,72 @@ Oh! And you can also provide general feedback, request product enhancements, sta
 ## Terms of Use
 
 Read these [Additional Terms of Use](https://developer.salesforce.com/tools/vscode/en/einstein/einstein-termsofuse) before signing up to use Agentforce Vibes.
+
+## Neovim plugin (this fork)
+
+This fork adds **einstein.nvim**, a dependency-free Neovim (>= 0.10) port of the
+portable core of the extension. It is one codebase in a standard plugin layout
+(`plugin/` + `lua/einstein/`), consumable by vim.pack, lazy.nvim, and LuaRocks.
+The VS Code extension above remains the full product; this plugin covers only
+the flows that ride the Einstein GPT gateway directly.
+
+### What it does
+
+The plugin talks to the same gateway the extension uses:
+
+- `POST {base}/chat/generations` where `{base}` defaults to
+  `https://api.salesforce.com/ai/gpt/v1` (test/stage/perf/dev hosts are
+  selectable via the `environment` option).
+- Headers: `Authorization: Bearer <org access token>`,
+  `x-sfdc-app-context: EinsteinGPT`, `x-sfdc-core-tenant-id: <org id>`, and
+  `x-client-feature-id` when configured.
+- The bearer token is resolved at runtime from your Salesforce CLI session
+  (`sf org display --json`) or from `EINSTEIN_SF_ACCESS_TOKEN` (with optional
+  `EINSTEIN_SF_TENANT_ID`). It is never stored, logged, or shown; when no
+  session exists, every command fails closed with a structured
+  `not_authenticated` error.
+
+Commands: `:EinsteinChat`, `:EinsteinGenerate`, `:EinsteinExplain`,
+`:EinsteinGenerateTests` (Apex test classes and LWC Jest tests, mirroring this
+repo's test case generation docs), `:EinsteinAuth`, `:EinsteinModels`.
+
+Out of scope, because they are VS Code-host surfaces with no gateway
+equivalent: the chat sidebar webview, the orchestration/task board, inline
+autocomplete (editor completion provider), Dev Agent conversations, and the
+MCP/skills settings UIs.
+
+### Install with vim.pack
+
+```lua
+vim.pack.add({ 'https://github.com/qompassai/Einstein-GPT-for-Developers' })
+require('einstein').setup({})
+```
+
+### Install with lazy.nvim
+
+```lua
+{
+  'qompassai/Einstein-GPT-for-Developers',
+  config = function()
+    require('einstein').setup({})
+  end,
+}
+```
+
+### Install with LuaRocks
+
+```sh
+luarocks make einstein-scm-1.rockspec
+```
+
+```lua
+require('einstein').setup({
+  -- model = 'sfdc_ai__DefaultBedrockAnthropicClaude46Sonnet', -- default
+  -- environment = 'prod',        -- prod | test | stage | perf | dev
+  -- sf_target_org = 'my-org',    -- optional sf --target-org
+  -- feature_id = '...',          -- optional x-client-feature-id
+})
+```
+
+Generated code comes from a nondeterministic model; review it before use,
+exactly as with the VS Code extension.
