@@ -1,0 +1,7 @@
+---
+# Minimal Neovim global model for selene: the `vim` table itself.
+# Field-level API modeling lives in LuaLS via .luarc.json; selene only
+# needs to know the global exists and is extensible.
+globals:
+  vim:
+    property: new-fields

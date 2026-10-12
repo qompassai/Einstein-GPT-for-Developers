@@ -1,0 +1,11 @@
+# Selene configuration for the einstein.nvim sources in this repo.
+# selene 0.31 cannot chain a builtin std name with file stds, so the
+# chain is file-only: the vendored lua51 std (which declares
+# lua_versions: [luajit]) plus vim.yml for the Neovim `vim` global.
+# Modeled on the Diver config's selene setup, minus its busted std.
+std = "lua51+vim"
+# Busted specs are modeled by the test runner, not this std chain.
+exclude = ["spec/**"]
+
+[lints]
+undefined_variable = "deny"
