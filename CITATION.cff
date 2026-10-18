@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Einstein-GPT-for-Developers (fork of forcedotcom/Einstein-GPT-for-Developers)"
+authors:
+  - family-names: Porter
+    given-names: Matthew A.
+    orcid: "https://orcid.org/0000-0002-0302-4812"
+    affiliation: "Qompass AI"
+version: "v2026-10-17"
+date-released: 2026-10-17
+license: Apache-2.0
+repository-code: "https://github.com/qompassai/Einstein-GPT-for-Developers"
+abstract: "Fork of forcedotcom/Einstein-GPT-for-Developers (https://github.com/forcedotcom/Einstein-GPT-for-Developers), held in the Qompass AI GitHub estate. Authorship of the underlying work belongs to the upstream project. Repository description: Fork of Einstein GPT For Developers"
